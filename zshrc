@@ -14,7 +14,11 @@ set -o no_extended_glob
 # Don't save duplicate commands in history
 setopt HIST_IGNORE_DUPS
 
-export PATH="$PATH:/Users/olxu/.local/bin"
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+autoload -U colors
+colors
+setopt prompt_subst
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -30,6 +34,7 @@ alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs 
 alias screen='screen -e\`n -s /bin/bash'
 alias tmux='export TERM=xterm-256color; /usr/bin/tmux'
 alias vim='vim -X -O'
+alias hpc='ssh -X olxu6283@hpc.sydney.edu.au'
 
 # bash completion
 if [ -f $HOME/.zsh/bash_completion ]; then
@@ -44,6 +49,13 @@ fpath+=$HOME/.zsh/_git
 # Command line vi mode
 set -o vi
 
+# reverse search
+bindkey -v
+bindkey '^R' history-incremental-search-backward
+
+# https://unix.stackexchange.com/questions/290392/backspace-in-zsh-stuck
+bindkey -v '^?' backward-delete-char
+
 # zsh prompt formatting
 fpath+=$HOME/.zsh/pure
 
@@ -52,6 +64,8 @@ autoload -Uz compinit && compinit
 
 autoload -U promptinit; promptinit
 prompt pure
+
+export PATH="$PATH:/Users/olxu/.local/bin"
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
