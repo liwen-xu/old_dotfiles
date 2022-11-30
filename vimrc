@@ -70,7 +70,12 @@ set ls=2
 set t_Co=256
 let g:seoul256_background = 233
 let g:seoul256_light_background = 256
-colo seoul256-light
+colo seoul256
+
+hi clear CursorLine
+hi CursorLine gui=underline cterm=underline
+"hi statusline ctermfg=15 ctermbg=None guifg=white
+hi Normal ctermbg=None guibg=black guifg=white
 
 set tags=tags;/
 
@@ -82,13 +87,14 @@ vnoremap <space> zf
 
 vnoremap . :norm.<CR>
 
-noremap <silent><c-l> :nohlsearch<cr>
+let maplocalleader = "\\"
+
+noremap <silent><leader>\ :nohlsearch<cr>
       \:syntax sync fromstart<cr>
       \<c-l>
 
-let maplocalleader = "\\"
+map <Tab> <C-W>W:cd %:p:h<CR>:<CR>
 
-syntax on 
 filetype plugin on 
 filetype indent on 
 let vimrplugin_assign = 0
@@ -103,5 +109,5 @@ autocmd BufWritePre *.html :%s/\s\+$//e
 
 autocmd Filetype rmd inoremap ;m <Space>%>%<Space>
 autocmd Filetype rmd nnoremap <Space>H :silent !brave &>/dev/null %<.html &<CR>:redraw!<CR>
-
-"set mouse=a
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>

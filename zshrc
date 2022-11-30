@@ -14,6 +14,7 @@ set -o no_extended_glob
 # Don't save duplicate commands in history
 setopt HIST_IGNORE_DUPS
 
+export GPG_TTY=$(tty)
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 autoload -U colors
@@ -24,17 +25,20 @@ export EDITOR=nvim
 export VISUAL=nvim
 alias vim=nvim
 
+
 #alias rm='rm -i'
 alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
 alias grepr='grep -r -n --color=auto'
 alias ipython='ipython notebook --matplotlib inline'
 alias ls='ls -G'
+alias ll='ls -alF'
 alias mv='mv -i'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
 alias screen='screen -e\`n -s /bin/bash'
 alias tmux='export TERM=xterm-256color; /usr/bin/tmux'
 alias vim='vim -X -O'
-alias hpc='ssh -X olxu6283@hpc.sydney.edu.au'
+alias pbs='ssh -X olxu6283@hpc.sydney.edu.au'
+alias sshxq='ssh -Y ict_hpctrain20@hpc.sydney.edu.au'
 
 # bash completion
 if [ -f $HOME/.zsh/bash_completion ]; then
@@ -57,15 +61,12 @@ bindkey '^R' history-incremental-search-backward
 bindkey -v '^?' backward-delete-char
 
 # zsh prompt formatting
-fpath+=$HOME/.zsh/pure
-
-# zsh git autocomplete
-autoload -Uz compinit && compinit
-
+fpath+=($HOME/.zsh/pure)
 autoload -U promptinit; promptinit
 prompt pure
 
-export PATH="$PATH:/Users/olxu/.local/bin"
+# zsh git autocomplete
+autoload -Uz compinit && compinit
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
