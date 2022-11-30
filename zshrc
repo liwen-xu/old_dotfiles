@@ -15,16 +15,13 @@ set -o no_extended_glob
 setopt HIST_IGNORE_DUPS
 
 export GPG_TTY=$(tty)
+export EDITOR=nvim
+export VISUAL=nvim
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 autoload -U colors
 colors
 setopt prompt_subst
-
-export EDITOR=nvim
-export VISUAL=nvim
-alias vim=nvim
-
 
 #alias rm='rm -i'
 alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
@@ -39,16 +36,17 @@ alias tmux='export TERM=xterm-256color; /usr/bin/tmux'
 alias vim='vim -X -O'
 alias pbs='ssh -X olxu6283@hpc.sydney.edu.au'
 alias sshxq='ssh -Y ict_hpctrain20@hpc.sydney.edu.au'
+alias vi=nvim
 
 # bash completion
 if [ -f $HOME/.zsh/bash_completion ]; then
 #   . $HOME/.zsh/bash_completion
 fi
 
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
-
-# Git completion
-fpath+=$HOME/.zsh/_git
+#zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+#
+## Git completion
+#fpath+=$HOME/.zsh/_git
 
 # Command line vi mode
 set -o vi

@@ -2,8 +2,8 @@
   pr  = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
   pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
 [user]
-	name = Oliver Xu
-	email = oliver.xu@arup.com
-	signingKey = C6BA47C09A13D39F
+  name = Oliver Xu
+  email = oliver.xu@arup.com
+  signingKey = C6BA47C09A13D39F
 [commit]
-	gpgsign = true
+  gpgsign = true
