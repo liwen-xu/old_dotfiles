@@ -4,21 +4,10 @@ Plug 'preservim/nerdtree'
 Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
+Plug 'junegunn/vim-easy-align'
 Plug 'jalvesaq/Nvim-R', {'branch': 'stable'}
-  let R_rconsole_height = 10
-  let R_openhtml = 0
-  let R_after_start = [':norm H']
-  let R_objbr_place = 'BOTTOM'
-  nmap <C-j> <Plug>RNextRChunk
-  nmap <C-k> <Plug>RPreviousRChunk
-  nmap <C-l> <Plug>RSendChunk
-  nmap <C-h> <Plug>RDSendLine
-  vmap <C-h> <Plug>RDSendSelection
 Plug 'vim-pandoc/vim-pandoc', {'for': 'rmd'}
-  let g:pandoc#modules#disabled = ["folding", "spell"]
 Plug 'vim-pandoc/vim-pandoc-syntax', {'for': 'rmd'}
-  let g:pandoc#syntax#conceal#use = 0
 
 call plug#end()
 
@@ -34,6 +23,7 @@ set cursorline
 set ruler
 set nu rnu 
 set so=7
+set clipboard=unnamedplus
 
 set vb "no visual bell"
 set t_vb= "no visual bell"
@@ -89,15 +79,38 @@ vnoremap . :norm.<CR>
 
 let maplocalleader = "\\"
 
-noremap <silent><leader>\ :nohlsearch<cr>
+noremap <silent><leader>; :nohlsearch<cr>
       \:syntax sync fromstart<cr>
       \<c-l>
 
 map <Tab> <C-W>W:cd %:p:h<CR>:<CR>
 
+" Start interactive EasyAlign in visual mode
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object
+nmap ga <Plug>(EasyAlign)
+nmap gaa ga_
+
+xmap <Leader>ga <Plug>(LiveEasyAlign)
+
 filetype plugin on 
 filetype indent on 
 let vimrplugin_assign = 0
+
+" Nvim-R
+let R_rconsole_height = 10
+let R_openhtml = 0
+let R_after_start = [':norm H']
+let R_objbr_place = 'BOTTOM'
+nmap <C-j> <Plug>RNextRChunk
+nmap <C-k> <Plug>RPreviousRChunk
+nmap <C-l> <Plug>RSendChunk
+nmap <C-h> <Plug>RDSendLine
+vmap <C-h> <Plug>RDSendSelection
+
+let g:pandoc#modules#disabled = ["folding", "spell"]
+let g:pandoc#syntax#conceal#use = 0
 
 autocmd BufNewFile,BufRead *.ts set syntax=javascript
 
@@ -109,5 +122,5 @@ autocmd BufWritePre *.html :%s/\s\+$//e
 
 autocmd Filetype rmd inoremap ;m <Space>%>%<Space>
 autocmd Filetype rmd nnoremap <Space>H :silent !brave &>/dev/null %<.html &<CR>:redraw!<CR>
-autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python map <buffer> <leader>x :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <leader>x <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
