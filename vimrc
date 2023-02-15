@@ -8,6 +8,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'jalvesaq/Nvim-R', {'branch': 'stable'}
 Plug 'vim-pandoc/vim-pandoc', {'for': 'rmd'}
 Plug 'vim-pandoc/vim-pandoc-syntax', {'for': 'rmd'}
+Plug 'vim-scripts/eclipse.vim'
 
 call plug#end()
 
@@ -57,10 +58,18 @@ set modeline
 set bs=2
 set ls=2
 
-set t_Co=256
-let g:seoul256_background = 233
-let g:seoul256_light_background = 256
-colo seoul256
+"set t_Co=256
+"let g:seoul256_background = 233
+"let g:seoul256_light_background = 256
+"colo seoul256
+if &term =~ '256color'
+  if has('termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+  endif
+  colo eclipse
+endif
 
 hi clear CursorLine
 hi CursorLine gui=underline cterm=underline

@@ -18,7 +18,13 @@ if [[ $platform == 'Darwin' ]]; then
   fi
   brew update
   brew install \
-    zsh vim neovim tmux git tectonic wget pyenv pure
+    zsh vim neovim tmux git tectonic wget pyenv pure \
+    ncurses
+
+  # https://github.com/tmux/tmux/issues/1257#issuecomment-581378716
+  /usr/local/opt/ncurses/bin/infocmp tmux-256color > ~/tmux-256color.info
+  tic -xe tmux-256color tmux-256color.info
+  infocmp tmux-256color | head
 
   echo "Curling from gcc/libstdc++-v3/include/precompiled/stdc++.h"
   cd /Library/Developer/CommandLineTools/usr/include

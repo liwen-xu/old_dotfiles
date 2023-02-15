@@ -15,28 +15,50 @@ set -o no_extended_glob
 setopt HIST_IGNORE_DUPS
 
 export GPG_TTY=$(tty)
-export EDITOR=nvim
-export VISUAL=nvim
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 autoload -U colors
 colors
 setopt prompt_subst
 
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
+export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
+export PATH="$HOME/bin:/usr/local/Cellar/tmux/3.3a_1/bin:$PATH"
+# openssl
+export PATH="/usr/local/opt/openssl@1.1/bin/:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+
+if command -v nvim > /dev/null 2>&1; then
+  if [[ ! -n $SSH_CONNECTION ]]; then
+    export EDITOR='nvim'
+  else
+    export EDITOR='mvim'
+  fi
+  alias vi=nvim
+fi
+
 #alias rm='rm -i'
-alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
+alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
+alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
 alias grepr='grep -r -n --color=auto'
 alias ipython='ipython notebook --matplotlib inline'
 alias ls='ls -G'
-alias ll='ls -alF'
+alias l='ls -alF'
+alias ll='ls -l'
 alias mv='mv -i'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
 alias screen='screen -e\`n -s /bin/bash'
-alias tmux='export TERM=xterm-256color; /usr/bin/tmux'
+alias tmux='export TERM=xterm-256color; /usr/local/bin/tmux'
 alias vim='vim -X -O'
-alias pbs='ssh -X olxu6283@hpc.sydney.edu.au'
-alias sshxq='ssh -Y ict_hpctrain20@hpc.sydney.edu.au'
-alias vi=nvim
+
+# git aliases
+alias gs="git status"
+alias gdc="git diff --cached"
+
+alias doc="docker"
+alias dcc="docker-compose"
 
 # bash completion
 if [ -f $HOME/.zsh/bash_completion ]; then
