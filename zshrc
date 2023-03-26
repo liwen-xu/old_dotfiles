@@ -30,15 +30,11 @@ export PATH="/usr/local/opt/openssl@1.1/bin/:$PATH"
 export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
 
-if command -v nvim > /dev/null 2>&1; then
-  if [[ ! -n $SSH_CONNECTION ]]; then
+if command -v nvim > /dev/null 2>&1 && [[ ! -n $SSH_CONNECTION ]]; then
     export EDITOR='nvim'
-  else
-    export EDITOR='mvim'
-  fi
-  alias vi=nvim
 fi
 
+alias vi=nvim
 #alias rm='rm -i'
 alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
@@ -97,3 +93,16 @@ eval "$(pyenv init -)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+__conda_setup="$('/Users/oliver.xu/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/oliver.xu/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/oliver.xu/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/oliver.xu/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+

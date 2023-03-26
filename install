@@ -31,6 +31,8 @@ if [[ $platform == 'Darwin' ]]; then
   [ ! -d ./bits ] && sudo mkdir bits
   curl https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/precompiled/stdc%2B%2B.h > bits/stdc++.h
   cd ~
+
+  ln -sfv $BASE/vscode/settings.json $HOME/Library/Application\ Support/Code/User/settings.json
 else 
   rm -f ~/.tmux.conf
   grep -v reattach-to-user-namespace tmux.conf > ~/.tmux.conf

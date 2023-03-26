@@ -5,10 +5,6 @@ Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'jalvesaq/Nvim-R', {'branch': 'stable'}
-Plug 'vim-pandoc/vim-pandoc', {'for': 'rmd'}
-Plug 'vim-pandoc/vim-pandoc-syntax', {'for': 'rmd'}
-Plug 'vim-scripts/eclipse.vim'
 
 call plug#end()
 
@@ -58,23 +54,14 @@ set modeline
 set bs=2
 set ls=2
 
-"set t_Co=256
-"let g:seoul256_background = 233
-"let g:seoul256_light_background = 256
-"colo seoul256
-if &term =~ '256color'
-  if has('termguicolors')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    set termguicolors
-  endif
-  colo eclipse
-endif
-
+set t_Co=256
+let g:seoul256_background = 233
+colo seoul256
 hi clear CursorLine
 hi CursorLine gui=underline cterm=underline
-"hi statusline ctermfg=15 ctermbg=None guifg=white
-hi Normal ctermbg=None guibg=black guifg=white
+hi statusline ctermfg=15 ctermbg=None guifg=white
+"hi Normal ctermbg=None guibg=black guifg=white
+hi! Normal ctermbg=NONE guibg=NONE
 
 set tags=tags;/
 
@@ -106,17 +93,6 @@ xmap <Leader>ga <Plug>(LiveEasyAlign)
 filetype plugin on 
 filetype indent on 
 let vimrplugin_assign = 0
-
-" Nvim-R
-let R_rconsole_height = 10
-let R_openhtml = 0
-let R_after_start = [':norm H']
-let R_objbr_place = 'BOTTOM'
-nmap <C-j> <Plug>RNextRChunk
-nmap <C-k> <Plug>RPreviousRChunk
-nmap <C-l> <Plug>RSendChunk
-nmap <C-h> <Plug>RDSendLine
-vmap <C-h> <Plug>RDSendSelection
 
 let g:pandoc#modules#disabled = ["folding", "spell"]
 let g:pandoc#syntax#conceal#use = 0

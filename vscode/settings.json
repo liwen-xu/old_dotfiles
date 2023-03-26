@@ -1,0 +1,46 @@
+{
+  "vim.vimrc.enable": true,
+  "vim.vimrc.path": "~/.vimrc",
+  "vim.hlsearch": true,
+  "vim.camelCaseMotion.enable": true,
+  "editor.insertSpaces": true,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "files.exclude": {
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "editor.acceptSuggestionOnEnter": "smart",
+  "editor.minimap.enabled": false,
+  "workbench.editor.enablePreview": false,
+  "extensions.ignoreRecommendations": false,
+  "java.configuration.checkProjectSettingsExclusions": false,
+  "explorer.confirmDragAndDrop": false,
+  "java.semanticHighlighting.enabled": false,
+  "vim.visualModeKeyBindingsNonRecursive": [
+    
+  ],
+  "workbench.iconTheme": "Monokai Pro Icons",
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": true,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "none", 
+  "prettier.jsxBracketSameLine": "all",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "editor.formatOnSave": true,
+  "azureFunctions.showProjectWarning": false,
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintArgs": [
+    "--errors-only",
+    "--generated-members=numpy.*, torch.*, cv2.*, cv.*"
+  ],
+  "workbench.colorTheme": "Visual Studio Dark",
+  "azureFunctions.showMultiCoreToolsWarning": false
+}
+
