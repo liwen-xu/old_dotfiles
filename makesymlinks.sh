@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+shopt -s dotglob
+
 BASE=$(pwd)
-packages=(*/)
+packages=([!.]*/)
 
 for package in "${packages[@]}"; do
   skip=0
@@ -16,9 +18,9 @@ for package in "${packages[@]}"; do
   done
 
   if ! ((skip)); then
-    for f in `find $package -type f -name '.*'`; do 
-      rc=$(basename $f)
-      ln -sfv "$BASE/$package/$rc" ~/"$rc"
+    for rc in $package*; do
+      [[ ! $(basename $rc) == .* ]] && continue;
+      ln -sfv "$BASE/$rc" ~/"$(basename $rc)"
     done
   fi
 done
@@ -26,5 +28,3 @@ done
 mkdir -p ~/.config/nvim
 touch ~/.config/nvim/init.vim
 ln -sf $BASE/vim/init.vim ~/.config/nvim/init.vim
-vim -es -u ~/.vimrc +PlugInstall +qa
-nvim -es -u ~/.config/nvim/init.vim +PlugInstall +qa

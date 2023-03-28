@@ -6,8 +6,6 @@ Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 
-endif
-
 call plug#end()
 
 " Set 7 lines to the cursor

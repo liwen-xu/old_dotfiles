@@ -65,3 +65,6 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
 fi
 
 tmux source-file ~/.tmux.conf
+
+vim -es -u ~/.vimrc +PlugInstall +qa
+nvim -es -u ~/.config/nvim/init.vim +PlugInstall +qa
