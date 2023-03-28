@@ -1,9 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 BASE=$(pwd)
-for rc in tmux.conf gitconfig vimrc zshrc; do
-  ln -sfv "$BASE/$rc" ~/."$rc"
-done	
+#for rc in tmux.conf gitconfig vimrc zshrc; do
+#  ln -sfv "$BASE/$rc" ~/."$rc"
+#done
+./makesymlinks.sh
 
 # git-prompt
 if [ ! -e ~/.git-prompt.sh ]; then
@@ -60,11 +63,5 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
   echo "Installing Tmux Plugin Manager"
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
-
-mkdir -p ~/.config/nvim
-touch ~/.config/nvim/init.vim
-ln -sf $BASE/init.vim ~/.config/nvim/init.vim
-vim -es -u ~/.vimrc +PlugInstall +qa
-nvim -es -u ~/.config/nvim/init.vim +PlugInstall +qa
 
 tmux source-file ~/.tmux.conf

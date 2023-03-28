@@ -15,6 +15,8 @@ set -o no_extended_glob
 setopt HIST_IGNORE_DUPS
 
 export GPG_TTY=$(tty)
+export EDITOR=vim
+export PAGER=less
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 autoload -U colors
@@ -30,11 +32,11 @@ export PATH="/usr/local/opt/openssl@1.1/bin/:$PATH"
 export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
 
-if command -v nvim > /dev/null 2>&1 && [[ ! -n $SSH_CONNECTION ]]; then
-    export EDITOR='nvim'
+if command -v nvim > /dev/null 2>&1; then
+  alias vi=nvim
+  export EDITOR=nvim
 fi
 
-alias vi=nvim
 #alias rm='rm -i'
 alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'

@@ -6,54 +6,53 @@ Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 
+endif
+
 call plug#end()
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set ignorecase "Ignore case when searching
-set smartcase
-set incsearch "Incremental search"
-set nolazyredraw "Don't redraw while executing macros"
-set hlsearch
-set cursorline
-set ruler
-set nu rnu 
+" Set 7 lines to the cursor
 set so=7
-set clipboard=unnamedplus
 
-set vb "no visual bell"
-set t_vb= "no visual bell"
+" Basic Configuration
+set encoding=utf-8
+set nu rnu
+set ruler
+set cursorline
+set mouse=a
+set modeline
+set backspace=indent,eol,start
+set whichwrap+=<,>,[,]
+set autoindent
+set smartindent
+set clipboard=unnamed
+set autoread
+set autochdir
+set timeoutlen=1000 ttimeoutlen=10
+set laststatus=2
+set wildmenu
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" No visual bells
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
 " Turn backup off, since most stuff is in SVN, git anyway...
 set nobackup
 set nowb
 set noswapfile
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Text, tabs and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set ts=4 sw=4 
+" Text, tab and indent related
 set ts=2 sw=2 sts=2
 set expandtab
 set autoindent
 set smartindent
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Moving around, tabs and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Moving around, tabs, windows and buffers
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 
-
-set modeline
-set bs=2
-set ls=2
-
+" Colorscheme-related Configuration
 set t_Co=256
 let g:seoul256_background = 233
 colo seoul256
@@ -65,14 +64,10 @@ hi! Normal ctermbg=NONE guibg=NONE
 
 set tags=tags;/
 
-map <F6> :set nu!<CR>
-imap <F6> <ESC>:set nu!<CR>a
+" Remap VIM 0 to first non-blank character
+map 0 ^
 
-nnoremap <space> za
-vnoremap <space> zf
-
-vnoremap . :norm.<CR>
-
+" Macros
 let maplocalleader = "\\"
 
 noremap <silent><leader>; :nohlsearch<cr>
@@ -81,21 +76,24 @@ noremap <silent><leader>; :nohlsearch<cr>
 
 map <Tab> <C-W>W:cd %:p:h<CR>:<CR>
 
-" Start interactive EasyAlign in visual mode
-xmap ga <Plug>(EasyAlign)
+map <F6> :set nu!<CR>
+imap <F6> <ESC>:set nu!<CR>a
 
-" Start interactive EasyAlign for a motion/text object
+nnoremap <space> za
+vnoremap <space> zf
+
+vnoremap . :norm.<CR>
+
+" EasyAlign
+xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 nmap gaa ga_
 
 xmap <Leader>ga <Plug>(LiveEasyAlign)
 
-filetype plugin on 
-filetype indent on 
+filetype plugin on
+filetype indent on
 let vimrplugin_assign = 0
-
-let g:pandoc#modules#disabled = ["folding", "spell"]
-let g:pandoc#syntax#conceal#use = 0
 
 autocmd BufNewFile,BufRead *.ts set syntax=javascript
 
