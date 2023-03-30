@@ -5,10 +5,22 @@ Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'rust-lang/rust.vim'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
-  "completion
+  
+  " Trouble (lsp diagnostics)
+  Plug 'nvim-tree/nvim-web-devicons'
+  Plug 'folke/trouble.nvim'
+
+  " Language parser
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-lua/plenary.nvim'
+  "Plug 'nvim-telescope/telescope.nvim'
+  Plug 'jose-elias-alvarez/null-ls.nvim'
+
+  " Autocompletion
   Plug 'nvim-lua/completion-nvim'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
@@ -17,9 +29,6 @@ if has('nvim')
   Plug 'hrsh7th/nvim-cmp'
   Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
-  "trouble (lsp diagnostics)
-  Plug 'nvim-tree/nvim-web-devicons'
-  Plug 'folke/trouble.nvim'
 endif
 
 call plug#end()
@@ -84,6 +93,107 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  on_attach = function(client, bufnr)
+    -- format on save
+    -- if client.resolved_capabilities.document_formatting then
+    --     vim.cmd([[
+    --     augroup LspFormatting
+    --         autocmd! * <buffer>
+    --         autocmd BufWritePre <buffer> silent noa w | lua vim.lsp.buf.formatting_sync(nil, 30000)
+    --     augroup END
+    --     ]])
+    -- end
+
+    return on_attach(client, bufnr)
+  end,
+  sources = {
+    null_ls.builtins.formatting.trim_whitespace,
+    null_ls.builtins.formatting.trim_newlines,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.completion.spell,
+  },
+  debug = true
+})
+
+vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
+  local client = vim.lsp.get_client_by_id(ctx.client_id)
+  local lvl = ({
+    'ERROR',
+    'WARN',
+    'INFO',
+    'DEBUG',
+  })[result.type]
+end
+
+-- Autocompletion
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
+
+local luasnip = require("luasnip")
+local cmp = require("cmp")
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.close(),
+    ["<CR>"] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+    }),
+    ["<Tab>"] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end,
+    ["<S-Tab>"] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end,
+  },
+  sources = {
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+    { name = "buffer" },
+  },
+})
+
+-- Tree-sitter
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = { "lua", "cpp", "c", "help", "vim" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
 
 require("trouble").setup {
   -- your configuration comes here
