@@ -37,6 +37,19 @@ if command -v nvim > /dev/null 2>&1; then
   export EDITOR=nvim
 fi
 
+# Replicate the bash vim mode behavior on 'v'
+edit-command-line() {
+  local tmpfile
+  tmpfile=$(mktemp)
+  echo "${(z)BUFFER}" > $tmpfile
+  vim $tmpfile </dev/tty # suppress "Vim: Warning: Input is not from a terminal"
+  BUFFER=$(< $tmpfile)
+  rm -f $tmpfile
+  zle .reset-prompt
+}
+zle -N edit-command-line
+bindkey -M vicmd 'v' edit-command-line
+
 #alias rm='rm -i'
 alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
@@ -46,10 +59,12 @@ alias ls='ls -G'
 alias l='ls -alF'
 alias ll='ls -l'
 alias mv='mv -i'
+alias cp='cp -i'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
 alias screen='screen -e\`n -s /bin/bash'
 alias tmux='export TERM=xterm-256color; /usr/local/bin/tmux'
 alias vim='vim -X -O'
+alias ports='lsof -nP -iTCP -sTCP:LISTEN'
 
 # git aliases
 alias gs="git status"
