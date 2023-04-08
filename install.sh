@@ -22,8 +22,8 @@ if [[ $platform == 'Darwin' ]]; then
   brew update
   brew install \
     zsh vim neovim tmux git tectonic wget pyenv pure \
-    ncurses
-
+    ncurses anaconda
+  
   # https://github.com/tmux/tmux/issues/1257#issuecomment-581378716
   /usr/local/opt/ncurses/bin/infocmp tmux-256color > ~/tmux-256color.info
   tic -xe tmux-256color tmux-256color.info
@@ -35,7 +35,11 @@ if [[ $platform == 'Darwin' ]]; then
   curl https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/precompiled/stdc%2B%2B.h > bits/stdc++.h
   cd ~
 
-  ln -sfv $BASE/vscode/settings.json $HOME/Library/Application\ Support/Code/User/settings.json
+  source ~/miniconda3/bin/activate
+  conda init zsh
+  conda update -n base -c defaults conda
+  conda install conda-build
+
 else 
   rm -f ~/.tmux.conf
   grep -v reattach-to-user-namespace tmux.conf > ~/.tmux.conf
