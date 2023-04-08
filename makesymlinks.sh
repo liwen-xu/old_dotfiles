@@ -31,5 +31,6 @@ touch ~/.config/nvim/init.vim
 ln -sf $BASE/vim/init.vim ~/.config/nvim/init.vim
 
 # vscode
+brew install --cask visual-studio-code
 ln -sfv $BASE/vscode/settings.json $HOME/Library/Application\ Support/Code/User/settings.json
 

@@ -2,34 +2,30 @@
 
 set -eu
 
-BASE=$(pwd)
-#for rc in tmux.conf gitconfig vimrc zshrc; do
-#  ln -sfv "$BASE/$rc" ~/."$rc"
-#done
-./makesymlinks.sh
-
-# git-prompt
-if [ ! -e ~/.git-prompt.sh ]; then
-  curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
-fi
-
 platform=$(uname)
 if [[ $platform == 'Darwin' ]]; then
+  # Homebrew
   if ! command -v brew &> /dev/null; then
-    echo "Installing homebrew"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
-  brew update
+
+  echo "Updating homebrew"
+  brew install --cask xquartz iterm2 keepingyouawake spectacle \
+    mat visualvm google-backup-and-sync rstudio r mactex osxfuse \
+    karabiner-elements maccy adoptopenjdk8
+  
   brew install \
-    zsh vim neovim tmux git tectonic wget pyenv pure \
-    ncurses anaconda
+    zsh vim neovim tmux git tectonic wget pure fzf ranger tree \
+    cmake coreutils cscope exiftool doxygen liboauth \
+    anaconda python@3.9 pyenv go maven yarn bash-completion \
+    reattach-to-user-namespace 
   
   # https://github.com/tmux/tmux/issues/1257#issuecomment-581378716
   /usr/local/opt/ncurses/bin/infocmp tmux-256color > ~/tmux-256color.info
   tic -xe tmux-256color tmux-256color.info
   infocmp tmux-256color | head
 
-  echo "Curling from gcc/libstdc++-v3/include/precompiled/stdc++.h"
+  # gcc/stdc++.h
   cd /Library/Developer/CommandLineTools/usr/include
   [ ! -d ./bits ] && sudo mkdir bits
   curl https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/precompiled/stdc%2B%2B.h > bits/stdc++.h
@@ -39,10 +35,13 @@ if [[ $platform == 'Darwin' ]]; then
   conda init zsh
   conda update -n base -c defaults conda
   conda install conda-build
-
 else 
   rm -f ~/.tmux.conf
   grep -v reattach-to-user-namespace tmux.conf > ~/.tmux.conf
+fi
+
+if [ ! -e ~/.git-prompt.sh ]; then
+  curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
 fi
 
 if [[ ! -d ~/.fzf ]]; then
@@ -69,6 +68,8 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
 fi
 
 tmux source-file ~/.tmux.conf
+
+./makesymlinks.sh
 
 vim -es -u ~/.vimrc +PlugInstall +qa
 nvim -es -u ~/.config/nvim/init.vim +PlugInstall +qa
