@@ -1,3 +1,5 @@
+zmodload zsh/zprof
+
 [ -f "$LOCAL_ADMIN_SCRIPTS/master.zshrc" ] && source "$LOCAL_ADMIN_SCRIPTS/master.zshrc"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -78,11 +80,6 @@ if [ -f $HOME/.zsh/bash_completion ]; then
 #   . $HOME/.zsh/bash_completion
 fi
 
-#zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
-#
-## Git completion
-#fpath+=$HOME/.zsh/_git
-
 # Command line vi mode
 set -o vi
 
@@ -94,22 +91,62 @@ bindkey '^R' history-incremental-search-backward
 bindkey -v '^?' backward-delete-char
 
 # zsh prompt formatting
-fpath+=($HOME/.zsh/pure)
-autoload -U promptinit; promptinit
-prompt pure
+fpath+=$HOME/.zsh/pure
 
 # zsh git autocomplete
 autoload -Uz compinit && compinit
 
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
+autoload -U promptinit; promptinit
+prompt pure
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+print() {
+  [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
+}
+
+# pyenv
+PYENV_ROOT="${HOME}/.pyenv"
+if [[ -d "$PYENV_ROOT}" ]]; then
+  pyenv () {
+    if ! (($path[(Ie)${PYENV_ROOT}/bin])); then
+      path[1,0]="${PYENV_ROOT}/bin"
+    fi
+    eval "$(command pyenv init -)"
+    pyenv "$@"
+    unfunction pyenv
+  }
+else
+  unset PYENV_ROOT
+fi
+
+#https://github.com/undg/zsh-nvm-lazy-load/blob/master/zsh-nvm-lazy-load.plugin.zsh
+load-nvm() {
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+}
+
+nvm() {
+    unset -f nvm
+    load-nvm
+    nvm "$@"
+}
+
+node() {
+    unset -f node
+    load-nvm
+    node "$@"
+}
+
+npm() {
+    unset -f npm
+    load-nvm
+    npm "$@"
+}
+
+yarn() {
+    unset -f yarn
+    load-nvm
+    yarn "$@"
+}
 
 __conda_setup="$('/Users/oliver.xu/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -123,3 +160,4 @@ else
 fi
 unset __conda_setup
 
+zprof
