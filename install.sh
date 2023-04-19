@@ -19,6 +19,8 @@ if [[ $platform == 'Darwin' ]]; then
     cmake coreutils cscope exiftool doxygen liboauth \
     anaconda python@3.9 pyenv go maven yarn bash-completion \
     reattach-to-user-namespace 
+
+  xcode-select --install
   
   # https://github.com/tmux/tmux/issues/1257#issuecomment-581378716
   /usr/local/opt/ncurses/bin/infocmp tmux-256color > ~/tmux-256color.info

@@ -9,6 +9,7 @@ Plug 'rust-lang/rust.vim'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
+  Plug 'williamboman/nvim-lsp-installer'
   
   " Trouble (lsp diagnostics)
   Plug 'nvim-tree/nvim-web-devicons'
@@ -82,6 +83,19 @@ end
 local nvim_lsp = require("lspconfig")
 
 local servers = { "clangd", "rust_analyzer", "ccls", "pyright", "tsserver" }
+
+require("nvim-lsp-installer").setup({
+    ensure_installed = servers,
+    automatic_installation = false,
+    ui = {
+        icons = {
+            server_installed = "✓",
+            server_pending = "➜",
+            server_uninstalled = "✗"
+        }
+    }
+})
+
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
