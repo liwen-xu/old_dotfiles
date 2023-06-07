@@ -238,6 +238,7 @@ set autochdir
 set timeoutlen=1000 ttimeoutlen=10
 set laststatus=2
 set wildmenu
+set ignorecase
 
 " No visual bells
 set noerrorbells
@@ -301,6 +302,10 @@ xmap <Leader>ga <Plug>(LiveEasyAlign)
 
 " Trouble
 nnoremap <silent> <leader>t :TroubleToggle<CR>
+
+" fzf
+nnoremap <silent> <Leader>f :Rg<CR>
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 filetype plugin on
 filetype indent on

@@ -40,7 +40,7 @@
     "--errors-only",
     "--generated-members=numpy.*, torch.*, cv2.*, cv.*"
   ],
-  "workbench.colorTheme": "Visual Studio Dark",
+  "workbench.colorTheme": "Visual Studio Light",
   "azureFunctions.showMultiCoreToolsWarning": false
 }
 
