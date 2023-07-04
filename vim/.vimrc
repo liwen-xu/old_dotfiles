@@ -7,6 +7,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'rust-lang/rust.vim'
 
+Plug 'github/copilot.vim'
+
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'williamboman/nvim-lsp-installer'
@@ -293,6 +295,11 @@ vnoremap <space> zf
 
 vnoremap . :norm.<CR>
 
+" Copilot
+imap <silent> <C-j> <Plug>(copilot-next)
+imap <silent> <C-k> <Plug>(copilot-previous)
+imap <silent> <C-\> <Plug>(copilot-dismiss)
+
 " EasyAlign
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
@@ -323,3 +330,6 @@ autocmd Filetype rmd inoremap ;m <Space>%>%<Space>
 autocmd Filetype rmd nnoremap <Space>H :silent !brave &>/dev/null %<.html &<CR>:redraw!<CR>
 autocmd FileType python map <buffer> <leader>x :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 autocmd FileType python imap <buffer> <leader>x <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+
+" save with sudo using w!!
+cmap w!! w !sudo tee > /dev/null %
