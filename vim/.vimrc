@@ -6,8 +6,7 @@ Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'rust-lang/rust.vim'
-
-Plug 'github/copilot.vim'
+"Plug 'github/copilot.vim'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
@@ -32,6 +31,10 @@ if has('nvim')
   Plug 'hrsh7th/nvim-cmp'
   Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
+
+  " Copilot
+  Plug 'zbirenbaum/copilot.lua'
+  Plug 'zbirenbaum/copilot-cmp'
 endif
 
 call plug#end()
@@ -166,6 +169,7 @@ cmp.setup({
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
+      select = false,
     }),
     ["<Tab>"] = function(fallback)
       if cmp.visible() then
@@ -190,6 +194,7 @@ cmp.setup({
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "buffer" },
+    { name = "copilot" },
   },
 })
 
@@ -216,6 +221,15 @@ require("trouble").setup {
   -- or leave it empty to use the default settings
   -- refer to the configuration section below
 }
+
+-- Copilot
+require('copilot').setup({
+  suggestion = {enabled = false},
+  panel = {enabled = false},
+})
+require('copilot_cmp').setup()
+
+
 
 EOF
 endif
