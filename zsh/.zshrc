@@ -109,6 +109,9 @@ print() {
   [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
 }
 
+# zsh-bd
+. ~/.zsh/plugins/bd/bd.zsh
+
 # pyenv
 PYENV_ROOT="${HOME}/.pyenv"
 if [[ -d "$PYENV_ROOT}" ]]; then

@@ -69,6 +69,12 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
+if [[ -f ~/.zshrc ]]; then
+  mkdir -p ~/.zsh/plugins/bd
+  curl https://raw.githubusercontent.com/Tarrasch/zsh-bd/master/bd.zsh > ~/.zsh/plugins/bd/bd.zsh
+  print -- "\n# zsh-bd\n. \~/.zsh/plugins/bd/bd.zsh" >> ~/.zshrc
+fi
+
 tmux source-file ~/.tmux.conf
 
 ./makesymlinks.sh
