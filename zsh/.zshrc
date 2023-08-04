@@ -98,8 +98,9 @@ bindkey -v '^?' backward-delete-char
 # zsh prompt formatting
 fpath+=$HOME/.zsh/pure
 
-# zsh git autocomplete
+# zsh compsys
 autoload -Uz compinit && compinit
+_comp_options+=(globdots)
 
 autoload -U promptinit; promptinit
 prompt pure
@@ -185,3 +186,4 @@ do
 done
 
 #zprof
+
