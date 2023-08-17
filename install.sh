@@ -17,8 +17,8 @@ if [[ $platform == 'Darwin' ]]; then
   brew install \
     zsh vim neovim tmux git tectonic wget pure fzf ranger tree \
     cmake coreutils cscope exiftool doxygen liboauth \
-    anaconda python@3.9 pyenv go maven yarn bash-completion \
-    reattach-to-user-namespace ripgrep
+    python@3.9 pyenv anaconda go maven yarn bash-completion \
+    reattach-to-user-namespace ripgrep vifm
 
   xcode-select --install
   

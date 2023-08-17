@@ -7,22 +7,17 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'rust-lang/rust.vim'
 "Plug 'github/copilot.vim'
+"Plug 'vifm/vifm.vim'
+Plug 'preservim/tagbar'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'williamboman/nvim-lsp-installer'
-  
-  " Trouble (lsp diagnostics)
   Plug 'nvim-tree/nvim-web-devicons'
   Plug 'folke/trouble.nvim'
-
-  " Language parser
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'nvim-lua/plenary.nvim'
-  "Plug 'nvim-telescope/telescope.nvim'
   Plug 'jose-elias-alvarez/null-ls.nvim'
-
-  " Autocompletion
   Plug 'nvim-lua/completion-nvim'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
@@ -31,8 +26,6 @@ if has('nvim')
   Plug 'hrsh7th/nvim-cmp'
   Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
-
-  " Copilot
   Plug 'zbirenbaum/copilot.lua'
   Plug 'zbirenbaum/copilot-cmp'
 endif
@@ -108,13 +101,6 @@ local servers = { "clangd", "rust_analyzer", "ccls", "pyright", "tsserver" }
 require("nvim-lsp-installer").setup({
     ensure_installed = servers,
     automatic_installation = false,
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
-        }
-    }
 })
 
 for _, lsp in ipairs(servers) do
@@ -250,11 +236,14 @@ require('copilot_cmp').setup()
 EOF
 endif
 
+let g:netrw_liststyle=3
+
 " Set 7 lines to the cursor
 set so=7
 
 " Basic Configuration
 set encoding=utf-8
+set ffs=unix,dos,mac
 set nu rnu
 set ruler
 set cursorline
@@ -293,13 +282,15 @@ set smartindent
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 
-" Colorscheme-related Configuration
+" Colorscheme-related configuration
 set t_Co=256
 let g:seoul256_background = 233
 colo seoul256
+
 hi clear CursorLine
 hi CursorLine gui=underline cterm=underline
 hi statusline ctermfg=15 ctermbg=None guifg=white
+
 "hi Normal ctermbg=None guibg=black guifg=white
 hi! Normal ctermbg=NONE guibg=NONE
 
@@ -343,6 +334,9 @@ nnoremap <silent> <leader>t :TroubleToggle<CR>
 " fzf
 nnoremap <silent> <Leader>f :Rg<CR>
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+nnoremap <silent> <Leader>e :NERDTreeToggle<CR>
+nnoremap <Leader>E :TagbarToggle<CR>
 
 filetype plugin on
 filetype indent on
