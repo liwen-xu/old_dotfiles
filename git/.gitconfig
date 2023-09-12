@@ -7,5 +7,10 @@
   signingKey = C6BA47C09A13D39F
 [commit]
   gpgsign = true
+[core]
+	excludesfile = ~/.gitignore
 [http]
   postBuffer = 524288000
+[credential]
+  helper = osxkeychain
+
