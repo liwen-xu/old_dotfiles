@@ -233,13 +233,6 @@ vim.g.netrw_liststyle = 3
 
 vim.opt.termguicolors = true
 
-vim.g.nvim_tree_show_icons = {
-  folders = 0,
-  files = 0,
-  git = 0,
-  folder_arrows = 0,
-}
-
 require("nvim-tree").setup({
   disable_netrw = true,
   update_focused_file = {
@@ -250,11 +243,18 @@ require("nvim-tree").setup({
   },
   sort_by = "case_sensitive",
   view = {
-    width = 30,
-    --auto_resize = true,
+    width = 50,
   },
   renderer = {
     group_empty = true,
+    icons = {
+      show = {
+        folder = false,
+        file = false,
+        git = false,
+        folder_arrow = false,
+      }
+    }
   },
   filters = {
     dotfiles = true,
