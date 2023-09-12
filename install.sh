@@ -2,6 +2,8 @@
 
 set -eu
 
+BASE=$(pwd)
+ 
 platform=$(uname)
 if [[ $platform == 'Darwin' ]]; then
   # Homebrew
@@ -12,7 +14,7 @@ if [[ $platform == 'Darwin' ]]; then
   echo "Updating homebrew"
   brew install --cask xquartz iterm2 keepingyouawake spectacle \
     mat visualvm google-backup-and-sync rstudio r mactex osxfuse \
-    karabiner-elements maccy adoptopenjdk8
+    xbar karabiner-elements maccy adoptopenjdk8 visual-studio-code
   
   brew install \
     zsh vim neovim tmux git tectonic wget pure fzf ranger tree \
@@ -32,6 +34,9 @@ if [[ $platform == 'Darwin' ]]; then
   [ ! -d ./bits ] && sudo mkdir bits
   curl https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/precompiled/stdc%2B%2B.h > bits/stdc++.h
   cd ~
+
+  # vscode
+  ln -sfv $BASE/vscode/settings.json $HOME/Library/Application\ Support/Code/User/settings.json
 
   source ~/miniconda3/bin/activate
   conda init zsh
@@ -78,6 +83,12 @@ fi
 tmux source-file ~/.tmux.conf
 
 ./makesymlinks.sh
+
+
+# neovim
+mkdir -p ~/.config/nvim
+touch ~/.config/nvim/init.vim
+ln -sf $BASE/vim/init.vim ~/.config/nvim/init.vim
 
 vim -es -u ~/.vimrc +PlugInstall +qa
 nvim -es -u ~/.config/nvim/init.vim +PlugInstall +qa

@@ -1,6 +1,6 @@
-call plug#begin('~/.vim/plugged')
+silent! if plug#begin('~/.vim/plugged')
 
-Plug 'preservim/nerdtree'
+"Plug 'preservim/nerdtree'
 Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -13,7 +13,8 @@ Plug 'preservim/tagbar'
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'williamboman/nvim-lsp-installer'
-  Plug 'nvim-tree/nvim-web-devicons'
+  Plug 'nvim-tree/nvim-tree.lua'
+  "Plug 'nvim-tree/nvim-web-devicons'
   Plug 'folke/trouble.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'nvim-lua/plenary.nvim'
@@ -31,6 +32,7 @@ if has('nvim')
 endif
 
 call plug#end()
+endif
 
 if has('nvim')
 
@@ -224,6 +226,41 @@ require("trouble").setup {
   -- refer to the configuration section below
 }
 
+-- nvim-tree 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.netrw_liststyle = 3
+
+vim.opt.termguicolors = true
+
+vim.g.nvim_tree_show_icons = {
+  folders = 0,
+  files = 0,
+  git = 0,
+  folder_arrows = 0,
+}
+
+require("nvim-tree").setup({
+  disable_netrw = true,
+  update_focused_file = {
+    enable = true,
+  },
+  diagnostics = {
+    enable = true,
+  },
+  sort_by = "case_sensitive",
+  view = {
+    width = 30,
+    --auto_resize = true,
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
+
 -- Copilot
 vim.g.copilot_assume_mapped = true
 require('copilot').setup({
@@ -235,8 +272,6 @@ require('copilot_cmp').setup()
 
 EOF
 endif
-
-let g:netrw_liststyle=3
 
 " Set 7 lines to the cursor
 set so=7
@@ -302,6 +337,10 @@ map 0 ^
 " Macros
 let maplocalleader = "\\"
 
+" make shifts keep selection
+vnoremap < <gv
+vnoremap > >gv
+
 noremap <silent><leader>; :nohlsearch<cr>
       \:syntax sync fromstart<cr>
       \<c-l>
@@ -335,7 +374,7 @@ nnoremap <silent> <leader>t :TroubleToggle<CR>
 nnoremap <silent> <Leader>f :Rg<CR>
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
-nnoremap <silent> <Leader>e :NERDTreeToggle<CR>
+nnoremap <silent> <Leader>e :NvimTreeToggle<CR>
 nnoremap <Leader>E :TagbarToggle<CR>
 
 filetype plugin on
