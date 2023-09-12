@@ -8,7 +8,7 @@
 [commit]
   gpgsign = true
 [core]
-	excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore
 [http]
   postBuffer = 524288000
 [credential]
