@@ -25,6 +25,9 @@ autoload -U colors
 colors
 setopt prompt_subst
 
+# disable brew auto-cleanup policy
+export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
+
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
 export PATH="/opt/homebrew/opt/node@18/bin:$PATH"

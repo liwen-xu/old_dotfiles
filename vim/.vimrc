@@ -259,6 +259,11 @@ require("nvim-tree").setup({
   filters = {
     dotfiles = true,
   },
+  actions = {
+    open_file = {
+      quit_on_open = true,
+    },
+  },
 })
 
 -- Copilot
@@ -324,7 +329,7 @@ colo seoul256
 
 hi clear CursorLine
 hi CursorLine gui=underline cterm=underline
-hi statusline ctermfg=15 ctermbg=None guifg=white
+"hi statusline ctermfg=15 ctermbg=None guifg=white
 
 "hi Normal ctermbg=None guibg=black guifg=white
 hi! Normal ctermbg=NONE guibg=NONE
