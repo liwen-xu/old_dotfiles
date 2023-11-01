@@ -44,6 +44,9 @@
   "azureFunctions.showMultiCoreToolsWarning": false,
   "workbench.startupEditor": "none",
   "update.showReleaseNotes": false,
-  "editor.inlineSuggest.enabled": true
+  "editor.inlineSuggest.enabled": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
 

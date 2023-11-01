@@ -72,7 +72,7 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
 alias screen='screen -e\`n -s /bin/bash'
-alias tmux='export TERM=xterm-256color; /usr/local/bin/tmux'
+alias tmux='export TERM=screen-256color; /usr/local/bin/tmux'
 alias vim='vim -X -O'
 alias ports='lsof -nP -iTCP -sTCP:LISTEN'
 

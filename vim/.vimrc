@@ -19,7 +19,7 @@ if has('nvim')
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'nvim-lua/plenary.nvim'
   Plug 'jose-elias-alvarez/null-ls.nvim'
-  Plug 'nvim-lua/completion-nvim'
+  "Plug 'nvim-lua/completion-nvim'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-path'
@@ -136,7 +136,6 @@ null_ls.setup({
   sources = {
     null_ls.builtins.formatting.trim_whitespace,
     null_ls.builtins.formatting.trim_newlines,
-    null_ls.builtins.formatting.stylua,
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.completion.spell,
   },
@@ -387,6 +386,8 @@ filetype indent on
 let vimrplugin_assign = 0
 
 autocmd BufNewFile,BufRead *.ts set syntax=javascript
+
+autocmd BufEnter *.cs :setlocal tabstop=4 shiftwidth=4 expandtab
 
 "strip trailing whitespace from certain files
 autocmd BufWritePre *.conf :%s/\s\+$//e
