@@ -116,19 +116,25 @@ print() {
 . ~/.zsh/plugins/bd/bd.zsh
 
 # pyenv
-PYENV_ROOT="${HOME}/.pyenv"
+export PYENV_ROOT="$HOME/.pyenv"
 if [[ -d "$PYENV_ROOT}" ]]; then
   pyenv () {
     if ! (($path[(Ie)${PYENV_ROOT}/bin])); then
       path[1,0]="${PYENV_ROOT}/bin"
     fi
-    eval "$(command pyenv init -)"
+    eval "$(command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH")"
+    eval "$(pyenv init -)"
     pyenv "$@"
     unfunction pyenv
   }
 else
   unset PYENV_ROOT
 fi
+
+# bleh forget lazy loading
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 #https://github.com/undg/zsh-nvm-lazy-load/blob/master/zsh-nvm-lazy-load.plugin.zsh
 load-nvm() {

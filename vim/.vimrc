@@ -152,7 +152,7 @@ vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
   })[result.type]
 end
 
--- Autocompletion
+-- completion
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 local luasnip = require("luasnip")
