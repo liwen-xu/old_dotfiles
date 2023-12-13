@@ -11,6 +11,9 @@ if [[ $platform == 'Darwin' ]]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
+  # https://stackoverflow.com/questions/66859145/why-updating-homebrew-takes-forever
+  mkdir /usr/local/Homebrew/.git/TMP_FETCH_FAILURES
+
   echo "Updating homebrew"
   brew install --cask xquartz iterm2 keepingyouawake spectacle \
     mat visualvm google-backup-and-sync rstudio r mactex osxfuse \
