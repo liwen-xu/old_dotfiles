@@ -41,6 +41,9 @@
     "--generated-members=numpy.*, torch.*, cv2.*, cv.*"
   ],
   "workbench.colorTheme": "Visual Studio Dark",
+  "colorize.languages": [
+    "javascript"
+  ],
   "azureFunctions.showMultiCoreToolsWarning": false,
   "workbench.startupEditor": "none",
   "update.showReleaseNotes": false,

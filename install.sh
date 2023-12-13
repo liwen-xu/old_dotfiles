@@ -20,7 +20,8 @@ if [[ $platform == 'Darwin' ]]; then
     zsh vim neovim tmux git tectonic wget pure fzf ranger tree \
     cmake coreutils cscope exiftool doxygen liboauth \
     python@3.9 pyenv anaconda go maven yarn bash-completion \
-    reattach-to-user-namespace ripgrep vifm
+    reattach-to-user-namespace ripgrep vifm \
+    prettierd
 
   xcode-select --install
   
