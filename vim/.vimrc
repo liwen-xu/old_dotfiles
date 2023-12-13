@@ -9,6 +9,7 @@ Plug 'rust-lang/rust.vim'
 "Plug 'github/copilot.vim'
 "Plug 'vifm/vifm.vim'
 Plug 'preservim/tagbar'
+Plug 'tpope/vim-fugitive'
 
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
@@ -334,6 +335,8 @@ require("nvim-tree").setup({
     },
   },
 })
+
+require('gitsigns').setup()
 
 -- Copilot
 vim.g.copilot_assume_mapped = true
