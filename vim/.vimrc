@@ -99,7 +99,7 @@ end
 
 local nvim_lsp = require("lspconfig")
 
-local servers = { "clangd", "rust_analyzer", "ccls", "pyright", "tsserver", "tsx", "ts", "json" }
+local servers = { "clangd", "rust_analyzer", "ccls", "pyright", "tsserver", "eslint" }
 
 require("nvim-lsp-installer").setup({
     ensure_installed = servers,
@@ -140,7 +140,7 @@ require'lspconfig'.eslint.setup{}
 local prettier = require("prettier")
 
 prettier.setup({
-  bin = 'prettier', -- or `'prettierd'` (v0.23.3+)
+  bin = 'prettierd',
   filetypes = {
     "css",
     "graphql",
