@@ -31,6 +31,7 @@ if has('nvim')
   Plug 'saadparwaiz1/cmp_luasnip'
   Plug 'zbirenbaum/copilot.lua'
   Plug 'zbirenbaum/copilot-cmp'
+  Plug 'lewis6991/gitsigns.nvim'
 endif
 
 call plug#end()
@@ -402,7 +403,7 @@ colo seoul256
 hi clear CursorLine
 hi CursorLine gui=underline cterm=underline
 "hi statusline ctermfg=15 ctermbg=None guifg=white
-
+set statusline+=%{get(b:,'gitsigns_status','')}
 "hi Normal ctermbg=None guibg=black guifg=white
 hi! Normal ctermbg=NONE guibg=NONE
 
