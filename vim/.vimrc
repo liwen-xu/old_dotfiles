@@ -352,9 +352,6 @@ require('copilot_cmp').setup()
 EOF
 endif
 
-" Set 7 lines to the cursor
-set so=7
-
 " Basic Configuration
 set encoding=utf-8
 set ffs=unix,dos,mac
