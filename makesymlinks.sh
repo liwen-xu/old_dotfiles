@@ -5,10 +5,12 @@ shopt -s dotglob
 BASE=$(pwd)
 packages=([!.]*/)
 
+declare -a skip_list=("bash_completion" "bin" "config" "vscode")
+
 for package in "${packages[@]}"; do
   skip=0
 
-  for dir in config bash_completion vscode; do
+  for dir in "${skip_list[@]}"; do
     if [ "$package" = "$dir" ]; then
       case "$(uname -s)" in
       Darwin*) skip=1 ;;
