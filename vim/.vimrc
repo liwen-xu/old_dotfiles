@@ -1,13 +1,11 @@
 silent! if plug#begin('~/.vim/plugged')
 
-"Plug 'preservim/nerdtree'
 Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'rust-lang/rust.vim'
 "Plug 'github/copilot.vim'
-"Plug 'vifm/vifm.vim'
 Plug 'preservim/tagbar'
 Plug 'tpope/vim-fugitive'
 Plug 'dstein64/vim-startuptime'
@@ -15,8 +13,8 @@ Plug 'dstein64/vim-startuptime'
 if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'williamboman/nvim-lsp-installer'
-  "Plug 'nvim-tree/nvim-tree.lua'
-  "Plug 'nvim-tree/nvim-web-devicons'
+  Plug 'nvim-tree/nvim-tree.lua'
+  Plug 'nvim-tree/nvim-web-devicons'
   Plug 'folke/trouble.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'nvim-lua/plenary.nvim'
@@ -299,44 +297,44 @@ require("trouble").setup {
 }
 
 -- nvim-tree 
---vim.g.loaded_netrw = 1
---vim.g.loaded_netrwPlugin = 1
---vim.g.netrw_liststyle = 3
---
---vim.opt.termguicolors = true
---
---require("nvim-tree").setup({
---  disable_netrw = true,
---  update_focused_file = {
---    enable = true,
---  },
---  diagnostics = {
---    enable = true,
---  },
---  sort_by = "case_sensitive",
---  view = {
---    width = 50,
---  },
---  renderer = {
---    group_empty = true,
---    icons = {
---      show = {
---        folder = false,
---        file = false,
---        git = false,
---        folder_arrow = false,
---      }
---    }
---  },
---  filters = {
---    dotfiles = true,
---  },
---  actions = {
---    open_file = {
---      quit_on_open = true,
---    },
---  },
---})
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.netrw_liststyle = 3
+
+vim.opt.termguicolors = true
+
+require("nvim-tree").setup({
+  disable_netrw = true,
+  update_focused_file = {
+    enable = true,
+  },
+  diagnostics = {
+    enable = true,
+  },
+  sort_by = "case_sensitive",
+  view = {
+    width = 50,
+  },
+  renderer = {
+    group_empty = true,
+    icons = {
+      show = {
+        folder = false,
+        file = false,
+        git = false,
+        folder_arrow = false,
+      }
+    }
+  },
+  filters = {
+    dotfiles = true,
+  },
+  actions = {
+    open_file = {
+      quit_on_open = true,
+    },
+  },
+})
 
 require('gitsigns').setup()
 
