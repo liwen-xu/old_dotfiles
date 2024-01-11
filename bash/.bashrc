@@ -97,3 +97,5 @@ fi
 
 # forwarded by ssh, even when root certs are used
 export SUDO_USER=$USER
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
