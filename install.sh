@@ -6,24 +6,31 @@ BASE=$(pwd)
  
 platform=$(uname)
 if [[ $platform == 'Darwin' ]]; then
+  cd ~
   # Homebrew
   if ! command -v brew &> /dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
   # https://stackoverflow.com/questions/66859145/why-updating-homebrew-takes-forever
-  mkdir /usr/local/Homebrew/.git/TMP_FETCH_FAILURES
+  if [[ ! -f /usr/local/Homebrew/.git/TMP_FETCH_FAILURES ]]; then
+    touch /usr/local/Homebrew/.git/TMP_FETCH_FAILURES
+  fi
 
   echo "Updating homebrew"
-  brew install --cask xquartz iterm2 keepingyouawake spectacle \
-    mat visualvm google-backup-and-sync rstudio r mactex osxfuse \
-    xbar karabiner-elements maccy adoptopenjdk8 visual-studio-code
+  for package in xquartz iterm2 keepingyouawake spectacle \
+    visualvm rstudio r mactex osxfuse xbar karabiner-elements \
+    adoptopenjdk maccy visual-studio-code; do
+    if [ ! brew list $package &> /dev/null ]; then
+      brew install --cask $package  
+    fi
+  done 
   
   brew install \
     zsh vim neovim tmux git tectonic wget pure fzf ranger tree \
     cmake coreutils cscope exiftool doxygen liboauth \
     python@3.9 pyenv anaconda go maven yarn bash-completion \
-    reattach-to-user-namespace ripgrep vifm \
+    reattach-to-user-namespace ripgrep vifm ncurses \
     prettierd
 
   xcode-select --install
@@ -32,12 +39,6 @@ if [[ $platform == 'Darwin' ]]; then
   /usr/local/opt/ncurses/bin/infocmp tmux-256color > ~/tmux-256color.info
   tic -xe tmux-256color tmux-256color.info
   infocmp tmux-256color | head
-
-  # gcc/stdc++.h
-  cd /Library/Developer/CommandLineTools/usr/include
-  [ ! -d ./bits ] && sudo mkdir bits
-  curl https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/precompiled/stdc%2B%2B.h > bits/stdc++.h
-  cd ~
 
   # vscode
   ln -sfv $BASE/vscode/settings.json $HOME/Library/Application\ Support/Code/User/settings.json
