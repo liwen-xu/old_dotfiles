@@ -33,7 +33,7 @@ if [[ $platform == 'Darwin' ]]; then
     reattach-to-user-namespace ripgrep vifm ncurses \
     prettierd
 
-  touch "$HOME/Library/Application Support/Code/User/settings.json" && ln -sfv $BASE/vscode/settings.json $HOME/Library/Application\ Support/Code/User/settings.json
+  curl -o "$HOME/Library/Application Support/Code/User/settings.json" https://gist.github.com/hachibits/11c98a4f935220f6f28eab51ee48d1bb
 else 
   rm -f ~/.tmux.conf
   grep -v reattach-to-user-namespace tmux.conf > ~/.tmux.conf
