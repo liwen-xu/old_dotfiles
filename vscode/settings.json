@@ -1,56 +1,82 @@
 {
-  "vim.vimrc.enable": true,
-  "vim.vimrc.path": "~/.vimrc",
-  "vim.hlsearch": true,
-  "vim.camelCaseMotion.enable": true,
-  "editor.insertSpaces": true,
-  "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "files.exclude": {
-    "**/.settings": true,
-    "**/.factorypath": true
-  },
-  "editor.acceptSuggestionOnEnter": "smart",
-  "editor.minimap.enabled": false,
-  "workbench.editor.enablePreview": false,
-  "extensions.ignoreRecommendations": false,
-  "java.configuration.checkProjectSettingsExclusions": false,
-  "explorer.confirmDragAndDrop": false,
-  "java.semanticHighlighting.enabled": false,
-  "vim.visualModeKeyBindingsNonRecursive": [
-    
-  ],
-  "workbench.iconTheme": "Monokai Pro Icons",
-  "prettier.tabWidth": 2,
-  "prettier.useTabs": true,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "none", 
-  "prettier.jsxBracketSameLine": "all",
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  },
-  "editor.formatOnSave": true,
-  "azureFunctions.showProjectWarning": false,
-  "[python]": {
-    "editor.formatOnType": true
-  },
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": true,
-  "python.linting.pylintArgs": [
-    "--errors-only",
-    "--generated-members=numpy.*, torch.*, cv2.*, cv.*"
-  ],
-  "workbench.colorTheme": "Visual Studio Dark",
-  "colorize.languages": [
-    "javascript"
-  ],
-  "azureFunctions.showMultiCoreToolsWarning": false,
-  "workbench.startupEditor": "none",
-  "update.showReleaseNotes": false,
-  "editor.inlineSuggest.enabled": true,
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "git.path": "/usr/local/bin/git"
+    "vim.vimrc.enable": true,
+    "vim.vimrc.path": "~/.vimrc",
+    "vim.hlsearch": true,
+    "vim.camelCaseMotion.enable": true,
+    "editor.insertSpaces": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "files.exclude": {
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "editor.acceptSuggestionOnEnter": "smart",
+    "editor.minimap.enabled": false,
+    "editor.guides.indentation": false,
+    "workbench.editor.enablePreview": false,
+    "extensions.ignoreRecommendations": true,
+    "java.configuration.checkProjectSettingsExclusions": false,
+    "explorer.confirmDragAndDrop": false,
+    "java.semanticHighlighting.enabled": false,
+    "vim.visualModeKeyBindingsNonRecursive": [],
+    //"vim.statusBarColorControl": true,
+    //"vim.statusBarColors.normal": [
+    //    "#8FBCBB",
+    //    "#434C5E"
+    //],
+    //"vim.statusBarColors.insert": "#BF616A",
+    //"vim.statusBarColors.visual": "#B48EAD",
+    //"vim.statusBarColors.visualline": "#B48EAD",
+    //"vim.statusBarColors.visualblock": "#A3BE8C",
+    //"vim.statusBarColors.replace": "#D08770",
+    //"vim.statusBarColors.commandlineinprogress": "#007ACC",
+    //"vim.statusBarColors.searchinprogressmode": "#007ACC",
+    //"vim.statusBarColors.easymotionmode": "#007ACC",
+    //"vim.statusBarColors.easymotioninputmode": "#007ACC",
+    //"vim.statusBarColors.surroundinputmode": "#007ACC",
+    "workbench.iconTheme": "Monokai Pro Icons",
+    "prettier.tabWidth": 2,
+    "prettier.useTabs": true,
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "none",
+    "prettier.jsxBracketSameLine": "all",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    },
+    "editor.formatOnSave": true,
+    "azureFunctions.showProjectWarning": false,
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintArgs": [
+        "--errors-only",
+        "--generated-members=numpy.*, torch.*, cv2.*, cv.*"
+    ],
+    "colorize.languages": [
+        "javascript"
+    ],
+    "azureFunctions.showMultiCoreToolsWarning": false,
+    "workbench.startupEditor": "none",
+    "update.showReleaseNotes": false,
+    "editor.inlineSuggest.enabled": true,
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "git.path": "/usr/local/bin/git",
+    //    "workbench.colorCustomizations": {
+    //        "statusBar.background": "#BF616A",
+    //        "statusBar.noFolderBackground": "#BF616A",
+    //        "statusBar.debuggingBackground": "#BF616A",
+    //        "statusBar.foreground": "#434C5E",
+    //        "statusBar.debuggingForeground": "#434C5E"
+    //    }
+    //"C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, IndentWidth: 4, ColumnLimit: 0, AlwaysBreakAfterDefinitionReturnType: None, BreakBeforeBraces: Allman, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, KeepEmptyLinesAtTheStartOfBlocks: false, KeepEmptyLinesAtTheEndOfBlocks: false, BreakBeforeBinaryOperators: NonAssignment, AllowShortLoopsOnASingleLine: false, AllowShortBlocksOnASingleLine: false }"
+    "C_Cpp.clang_format_style": "{ Google, AllowShortLoopsOnASingleLine: false, IndentWidth: 4 } ",
+    "editor.lineNumbers": "relative",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "cmake.options.statusBarVisibility": "compact",
 }
-
