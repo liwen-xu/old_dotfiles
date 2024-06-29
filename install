@@ -24,4 +24,3 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source-file ~/.tmux.conf
 
 curl -o "$HOME/Library/Application Support/Code/User/settings.json" https://gist.github.com/hachibits/11c98a4f935220f6f28eab51ee48d1bb
-
