@@ -41,6 +41,7 @@ export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/bin/c++:/usr/bin/make
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
 if command -v nvim > /dev/null 2>&1; then
   alias vi=nvim
