@@ -3,6 +3,8 @@
 [ -f "$LOCAL_ADMIN_SCRIPTS/master.zshrc" ] && source "$LOCAL_ADMIN_SCRIPTS/master.zshrc"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND="find . -maxdepth 1 | sed 's/^..//'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Disable C-S and C-Q
 if [[ -t 0 && $- = *i* ]]
@@ -41,7 +43,6 @@ export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/bin/c++:/usr/bin/make
-export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
 if command -v nvim > /dev/null 2>&1; then
   alias vi=nvim
@@ -73,9 +74,11 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
 alias screen='screen -e\`n -s /bin/bash'
-alias tmux='export TERM=screen-256color; /usr/local/bin/tmux'
+#alias tmux='export TERM=screen-256color; /usr/local/bin/tmux'
+alias tmux='SHELL=/usr/local/bin/zsh tmux -L zsh'
 alias vim='vim -X -O'
 alias ports='lsof -nP -iTCP -sTCP:LISTEN'
+alias pip='pip3'
 
 # git aliases
 alias gs="git status"
@@ -99,41 +102,10 @@ bindkey '^R' history-incremental-search-backward
 # https://unix.stackexchange.com/questions/290392/backspace-in-zsh-stuck
 bindkey -v '^?' backward-delete-char
 
-# zsh prompt formatting
-fpath+=$HOME/.zsh/pure
-
-# zsh compsys
-autoload -Uz compinit && compinit
-_comp_options+=(globdots)
-
-autoload -U promptinit; promptinit
-prompt pure
-
-print() {
-  [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
-}
-
 # zsh-bd
 . ~/.zsh/plugins/bd/bd.zsh
 
 # pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-if [[ -d "$PYENV_ROOT}" ]]; then
-  pyenv () {
-    if ! (($path[(Ie)${PYENV_ROOT}/bin])); then
-      path[1,0]="${PYENV_ROOT}/bin"
-    fi
-    eval "$(command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH")"
-    eval "$(pyenv init -)"
-    pyenv "$@"
-    unfunction pyenv
-  }
-else
-  unset PYENV_ROOT
-fi
-
-# bleh forget lazy loading
-export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
@@ -197,6 +169,37 @@ for lazy_conda_alias in $lazy_conda_aliases
 do
   alias $lazy_conda_alias="load_conda && $lazy_conda_alias"
 done
+
+# zsh prompt formatting
+#fpath+=$HOME/.zsh/pure
+fpath+=("$(brew --prefix)/share/zsh/site-functions")
+
+#autoload -Uz compinit && compinit
+#_comp_options+=(globdots)
+
+# zsh compsys
+autoload -Uz compinit
+if [[ -n $(print ~/.zcompdump(Nmh+24)) ]] {
+  # Regenerate completions because the dump file hasn't been modified within the last 24 hours
+  compinit
+} else {
+  # Reuse the existing completions file
+  compinit -C
+}
+
+autoload -U promptinit; promptinit
+prompt pure
+
+print() {
+  [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
+}
+
+export NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+# End Nix
 
 #zprof
 
