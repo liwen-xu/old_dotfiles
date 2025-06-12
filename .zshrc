@@ -113,9 +113,8 @@ eval "$(pyenv init -)"
 
 setopt interactivecomments
 
-# zsh prompt formatting
-fpath+=$HOME/.zsh/pure
-#fpath+=("$(brew --prefix)/share/zsh/site-functions")
+fpath+=("$(brew --prefix)/share/zsh/site-functions")
+fpath+=($HOME/.zsh/pure)
 
 autoload -U compinit; compinit
 
