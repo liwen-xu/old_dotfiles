@@ -92,6 +92,11 @@ if [ -f $HOME/.zsh/bash_completion ]; then
 #   . $HOME/.zsh/bash_completion
 fi
 
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+
+# Git completion
+fpath+=$HOME/.zsh/_git
+
 # Command line vi mode
 set -o vi
 
@@ -102,93 +107,23 @@ bindkey '^R' history-incremental-search-backward
 # https://unix.stackexchange.com/questions/290392/backspace-in-zsh-stuck
 bindkey -v '^?' backward-delete-char
 
-# zsh-bd
-. ~/.zsh/plugins/bd/bd.zsh
-
 # pyenv
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-#https://github.com/undg/zsh-nvm-lazy-load/blob/master/zsh-nvm-lazy-load.plugin.zsh
-load-nvm() {
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-}
-
-nvm() {
-    unset -f nvm
-    load-nvm
-    nvm "$@"
-}
-
-node() {
-    unset -f node
-    load-nvm
-    node "$@"
-}
-
-npm() {
-    unset -f npm
-    load-nvm
-    npm "$@"
-}
-
-yarn() {
-    unset -f yarn
-    load-nvm
-    yarn "$@"
-}
-
-lazy_conda_aliases=('python' 'conda' 'python3')
-
-load_conda() {
-  for lazy_conda_alias in $lazy_conda_aliases
-  do
-    unalias $lazy_conda_alias
-  done
-
-  __conda_prefix="$HOME/.miniconda3"
-
-  __conda_setup="$('/usr/local/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-  if [ $? -eq 0 ]; then
-      eval "$__conda_setup"
-  else
-      if [ -f "/usr/local/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-          . "/usr/local/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-      else
-          export PATH="/usr/local/Caskroom/miniforge/base/bin:$PATH"
-      fi
-  fi
-  unset __conda_setup
-  
-  unset __conda_prefix
-  unfunction load_conda
-}
-
-for lazy_conda_alias in $lazy_conda_aliases
-do
-  alias $lazy_conda_alias="load_conda && $lazy_conda_alias"
-done
+setopt interactivecomments
 
 # zsh prompt formatting
-#fpath+=$HOME/.zsh/pure
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
+fpath+=$HOME/.zsh/pure
+#fpath+=("$(brew --prefix)/share/zsh/site-functions")
 
-#autoload -Uz compinit && compinit
-#_comp_options+=(globdots)
-
-# zsh compsys
-autoload -Uz compinit
-if [[ -n $(print ~/.zcompdump(Nmh+24)) ]] {
-  # Regenerate completions because the dump file hasn't been modified within the last 24 hours
-  compinit
-} else {
-  # Reuse the existing completions file
-  compinit -C
-}
+autoload -U compinit; compinit
 
 autoload -U promptinit; promptinit
 prompt pure
+
+# zsh-bd
+. ~/.zsh/plugins/bd/bd.zsh
 
 print() {
   [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
@@ -202,4 +137,3 @@ fi
 # End Nix
 
 #zprof
-
