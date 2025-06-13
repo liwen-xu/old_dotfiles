@@ -1,4 +1,4 @@
-#zmodload zsh/zprof
+zmodload zsh/zprof
 
 [ -f "$LOCAL_ADMIN_SCRIPTS/master.zshrc" ] && source "$LOCAL_ADMIN_SCRIPTS/master.zshrc"
 
@@ -116,13 +116,13 @@ setopt interactivecomments
 fpath+=("$(brew --prefix)/share/zsh/site-functions")
 fpath+=($HOME/.zsh/pure)
 
-autoload -U compinit; compinit
+autoload -Uz compinit && compinit -C
 
 autoload -U promptinit; promptinit
 prompt pure
 
 # zsh-bd
-. ~/.zsh/plugins/bd/bd.zsh
+. $HOME/.zsh/plugins/bd/bd.zsh
 
 print() {
   [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
@@ -135,4 +135,4 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 fi
 # End Nix
 
-#zprof
+zprof

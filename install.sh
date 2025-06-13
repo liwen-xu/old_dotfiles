@@ -15,7 +15,6 @@ if [ ! -e ~/.git-prompt.sh ]; then
   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
 fi
 
-# scripts
 mkdir -p ~/bin
 for bin in $BASE/bin/*; do
   ln -svf "$bin" ~/bin
@@ -29,6 +28,7 @@ if [ "$(uname -s)" = 'Darwin' ]; then
 
   brew tap universal-ctags/universal-ctags
   brew install --HEAD universal-ctags
+  brew install zsh-completions
 
   gem install gem-ctags
   gem ctags
