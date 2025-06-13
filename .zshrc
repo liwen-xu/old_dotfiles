@@ -113,7 +113,10 @@ eval "$(pyenv init -)"
 
 setopt interactivecomments
 
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
+if type brew &>/dev/null
+then
+  fpath+=("$(brew --prefix)/share/zsh/site-functions")
+fi
 fpath+=($HOME/.zsh/pure)
 
 #autoload -Uz compinit && compinit -C
@@ -129,6 +132,18 @@ prompt pure
 
 # zsh-bd
 . $HOME/.zsh/plugins/bd/bd.zsh
+
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line -w
+  else
+    zle push-input -w
+    zle clear-screen -w
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
 
 print() {
   [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
