@@ -1,4 +1,4 @@
-zmodload zsh/zprof
+#zmodload zsh/zprof
 
 [ -f "$LOCAL_ADMIN_SCRIPTS/master.zshrc" ] && source "$LOCAL_ADMIN_SCRIPTS/master.zshrc"
 
@@ -116,7 +116,13 @@ setopt interactivecomments
 fpath+=("$(brew --prefix)/share/zsh/site-functions")
 fpath+=($HOME/.zsh/pure)
 
-autoload -Uz compinit && compinit -C
+#autoload -Uz compinit && compinit -C
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
+  compinit
+else
+  compinit -C
+fi
 
 autoload -U promptinit; promptinit
 prompt pure
@@ -135,4 +141,4 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 fi
 # End Nix
 
-zprof
+#zprof
