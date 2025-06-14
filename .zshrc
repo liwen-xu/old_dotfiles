@@ -27,6 +27,14 @@ autoload -U colors
 colors
 setopt prompt_subst
 
+# Z integration
+source $HOME/z.sh
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --reverse +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
+}
+
 # disable brew auto-cleanup policy
 export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
 
@@ -119,7 +127,6 @@ then
 fi
 fpath+=($HOME/.zsh/pure)
 
-#autoload -Uz compinit && compinit -C
 autoload -Uz compinit
 if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
   compinit
@@ -148,12 +155,5 @@ bindkey '^Z' fancy-ctrl-z
 print() {
   [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
 }
-
-export NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1
-# Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
-# End Nix
 
 #zprof

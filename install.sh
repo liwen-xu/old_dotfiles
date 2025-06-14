@@ -10,6 +10,8 @@ for rc in .*; do
   ln -sfv "$BASE/$rc" ~/"$rc"
 done
 
+[ -e ~/z.sh ] && mv -v ~/z.sh bak/z.sh; ln -sfv "$BASE/z.sh" ~/z.sh
+
 # git-prompt
 if [ ! -e ~/.git-prompt.sh ]; then
   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
