@@ -33,6 +33,9 @@ then
 fi
 fpath+=($HOME/.zsh/pure)
 
+# Git completion
+fpath+=$HOME/.zsh/_git
+
 autoload -Uz compinit
 if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
   compinit
@@ -107,13 +110,10 @@ if [ -f $HOME/.zsh/bash_completion ]; then
 #   . $HOME/.zsh/bash_completion
 fi
 
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+zstyle ':completion:*:*:git:*' script ~/.zsh/_git
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' menu yes select
-
-# Git completion
-fpath+=$HOME/.zsh/_git
 
 # Command line vi mode
 set -o vi

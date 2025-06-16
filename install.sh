@@ -17,6 +17,10 @@ if [ ! -e ~/.git-prompt.sh ]; then
   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
 fi
 
+if [ ! -e ~/.zsh/_git ]; then
+  curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+fi
+
 mkdir -p ~/bin
 for bin in $BASE/bin/*; do
   ln -svf "$bin" ~/bin
