@@ -396,7 +396,8 @@ nnoremap <C-p> :bprevious<CR>
 " Colorscheme-related configuration
 set t_Co=256
 let g:seoul256_background = 233
-colo seoul256
+silent! colo seoul256
+
 "colo zenburn
 
 hi clear CursorLine

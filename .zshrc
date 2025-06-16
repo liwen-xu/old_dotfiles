@@ -1,7 +1,5 @@
 #zmodload zsh/zprof
 
-[ -f "$LOCAL_ADMIN_SCRIPTS/master.zshrc" ] && source "$LOCAL_ADMIN_SCRIPTS/master.zshrc"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND="find . -maxdepth 1 | sed 's/^..//'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -27,6 +25,27 @@ autoload -U colors
 colors
 setopt prompt_subst
 
+setopt interactivecomments
+
+if type brew &>/dev/null
+then
+  fpath+=("$(brew --prefix)/share/zsh/site-functions")
+fi
+fpath+=($HOME/.zsh/pure)
+
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
+  compinit
+else
+  compinit -C
+fi
+
+autoload -U promptinit; promptinit
+prompt pure
+
+# zsh-bd
+. $HOME/.zsh/plugins/bd/bd.zsh
+
 # Z integration
 source $HOME/z.sh
 unalias z 2> /dev/null
@@ -35,27 +54,40 @@ z() {
   cd "$(_z -l 2>&1 | fzf --height 40% --reverse +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
 }
 
-# disable brew auto-cleanup policy
-export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
-
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
-export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
-export PATH="$HOME/bin:/usr/local/Cellar/tmux/3.3a_1/bin:$PATH"
-# openssl
-export PATH="/usr/local/opt/openssl@1.1/bin/:$PATH"
-export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
-# llvm
-export LDFLAGS="-L/usr/local/opt/llvm/lib"
-export CPPFLAGS="-I/usr/local/opt/llvm/include"
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/bin/c++:/usr/bin/make
-
 if command -v nvim > /dev/null 2>&1; then
   alias vi=nvim
   export EDITOR=nvim
 fi
+
+fzf-down() {
+  fzf --height 50% "$@" --border
+}
+
+# fco - checkout git branch/tag
+fco() {
+  local tags branches target
+  tags=$(git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
+  branches=$(
+    git branch --all | grep -v HEAD             |
+    sed "s/.* //"    | sed "s#remotes/[^/]*/##" |
+    sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
+  target=$(
+    (echo "$tags"; echo "$branches") | sed '/^$/d' |
+    fzf-down --no-hscroll --reverse --ansi +m -d "\t" -n 2 -q "$*") || return
+  git checkout $(echo "$target" | awk '{print $2}')
+}
+
+# fshow - git commit browser
+fshow() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --header "Press CTRL-S to toggle sort" \
+      --preview "echo {} | grep -o '[a-f0-9]\{7\}' | head -1 |
+                 xargs -I % sh -c 'git show --color=always % | head -200 '" \
+      --bind "enter:execute:echo {} | grep -o '[a-f0-9]\{7\}' | head -1 |
+              xargs -I % sh -c 'vim fugitive://\$(git rev-parse --show-toplevel)/.git//% < /dev/tty'"
+}
 
 # Replicate the bash vim mode behavior on 'v'
 edit-command-line() {
@@ -70,6 +102,54 @@ edit-command-line() {
 zle -N edit-command-line
 bindkey -M vicmd 'v' edit-command-line
 
+# bash completion
+if [ -f $HOME/.zsh/bash_completion ]; then
+#   . $HOME/.zsh/bash_completion
+fi
+
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' menu yes select
+
+# Git completion
+fpath+=$HOME/.zsh/_git
+
+# Command line vi mode
+set -o vi
+
+# reverse search
+bindkey -v
+bindkey '^R' history-incremental-search-backward
+
+# https://unix.stackexchange.com/questions/290392/backspace-in-zsh-stuck
+bindkey -v '^?' backward-delete-char
+
+# pyenv
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line -w
+  else
+    zle push-input -w
+    zle clear-screen -w
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
+print() {
+  [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
+}
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 #alias rm='rm -i'
 alias gitcleanbranch='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 alias mydu='du -ks * | sort -nr | cut -f2 | sed '"'"'s/^/"/;s/$/"/'"'"' | xargs du -sh'
@@ -92,68 +172,21 @@ alias pip='pip3'
 alias gs="git status"
 alias gdc="git diff --cached"
 
-alias doc="docker"
-alias dcc="docker-compose"
+# disable brew auto-cleanup policy
+export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
 
-# bash completion
-if [ -f $HOME/.zsh/bash_completion ]; then
-#   . $HOME/.zsh/bash_completion
-fi
-
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
-
-# Git completion
-fpath+=$HOME/.zsh/_git
-
-# Command line vi mode
-set -o vi
-
-# reverse search
-bindkey -v
-bindkey '^R' history-incremental-search-backward
-
-# https://unix.stackexchange.com/questions/290392/backspace-in-zsh-stuck
-bindkey -v '^?' backward-delete-char
-
-# pyenv
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-setopt interactivecomments
-
-if type brew &>/dev/null
-then
-  fpath+=("$(brew --prefix)/share/zsh/site-functions")
-fi
-fpath+=($HOME/.zsh/pure)
-
-autoload -Uz compinit
-if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
-  compinit
-else
-  compinit -C
-fi
-
-autoload -U promptinit; promptinit
-prompt pure
-
-# zsh-bd
-. $HOME/.zsh/plugins/bd/bd.zsh
-
-fancy-ctrl-z () {
-  if [[ $#BUFFER -eq 0 ]]; then
-    BUFFER="fg"
-    zle accept-line -w
-  else
-    zle push-input -w
-    zle clear-screen -w
-  fi
-}
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
-
-print() {
-  [ 0 -eq $# -a "prompt_pure_precmd" = "${funcstack[-1]}" ] || builtin print "$@";
-}
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
+export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
+export PATH="$HOME/bin:/usr/local/Cellar/tmux/3.3a_1/bin:$PATH"
+# openssl
+export PATH="/usr/local/opt/openssl@1.1/bin/:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+# llvm
+export LDFLAGS="-L/usr/local/opt/llvm/lib"
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/bin/c++:/usr/bin/make
 
 #zprof
