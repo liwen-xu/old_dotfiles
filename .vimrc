@@ -46,6 +46,23 @@ endif
 if has('nvim')
 
 lua << EOF
+-- osc52 clipboard
+--vim.g.clipboard = {
+--  name = 'osc52',
+--  copy = {['+'] = copy, ['*'] = copy},
+--  paste = {['+'] = 'tmux save-buffer -', ['*'] = 'tmux save-buffer -'}
+--}
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+  paste = {
+    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+  },
+}
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
@@ -408,17 +425,17 @@ function _G.gitsigns_status()
   return '(' .. table.concat(components, ' ') .. ')'
 end
 
-vim.opt.statusline = table.concat({
-  ' %{v:lua.encoding_head()}',
-  ':',
-  '%{v:lua.file_flags()}',
-  ' %f',
-  ' %{v:lua.gitsigns_status()}',
-  '%=',
-  ' %P',
-  ' (%l,%c)',
-  '%{v:lua.status_diagnostic()} ',
-}, '')
+"vim.opt.statusline = table.concat({
+"  ' %{v:lua.encoding_head()}',
+"  ':',
+"  '%{v:lua.file_flags()}',
+"  ' %f',
+"  ' %{v:lua.gitsigns_status()}',
+"  '%=',
+"  ' %P',
+"  ' (%l,%c)',
+"  '%{v:lua.status_diagnostic()} ',
+"}, '')
 
 require('fzf-lua').setup({'fzf-vim'})
 vim.keymap.set({ "n" }, '<Leader>f', 
@@ -575,23 +592,35 @@ au Filetype python setlocal ts=2 sts=0 sw=2
 " save with sudo using w!!
 cmap w!! w !sudo tee > /dev/null %
 
-if !has('nvim')
-  function! StatusDiagnostic() abort
-    let info = get(b:, 'coc_diagnostic_info', {})
-    if empty(info) | return '' | endif
-    let msgs = []
-    if get(info, 'error', 0)
-      call add(msgs, 'E' . info['error'])
-    endif
-    if get(info, 'warning', 0)
-      call add(msgs, 'W' . info['warning'])
-    endif
-    return join(msgs, ' '). ' ' . get(g:, 'coc_status', '')
-  endfunction
-  set statusline=\ %{strlen(&fenc)?toupper(&fenc[0]):'-'}:%{&readonly&&&modified?'%*':&modified?'**':&readonly?'%%':'--'}\ %f\ (%{&ft})%*
-  set statusline+=%=%{strlen(FugitiveHead())?'⎇\ '.FugitiveHead():''}\ %P\ (%l,%c)\ %{StatusDiagnostic()}%*
+"if !has('nvim')
+"  function! StatusDiagnostic() abort
+"    let info = get(b:, 'coc_diagnostic_info', {})
+"    if empty(info) | return '' | endif
+"    let msgs = []
+"    if get(info, 'error', 0)
+"      call add(msgs, 'E' . info['error'])
+"    endif
+"    if get(info, 'warning', 0)
+"      call add(msgs, 'W' . info['warning'])
+"    endif
+"    return join(msgs, ' '). ' ' . get(g:, 'coc_status', '')
+"  endfunction
+"  set statusline=\ %{strlen(&fenc)?toupper(&fenc[0]):'-'}:%{&readonly&&&modified?'%*':&modified?'**':&readonly?'%%':'--'}\ %f\ (%{&ft})%*
+"  set statusline+=%=%{strlen(FugitiveHead())?'⎇\ '.FugitiveHead():''}\ %P\ (%l,%c)\ %{StatusDiagnostic()}%*
+"
+"  let g:ycm_global_ycm_extra_conf = expand('$HOME/bin/ycm_global_extra_conf.py')
+"  let g:ycm_autoclose_preview_window_after_insertion = 1
+"  set cscopetag
+"endif
+function! s:statusline_expr()
+  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+  let ro  = "%{&readonly ? '[RO] ' : ''}"
+  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+  let sep = ' %= '
+  let pos = ' %-12(%l : %c%V%) '
+  let pct = ' %P'
 
-  let g:ycm_global_ycm_extra_conf = expand('$HOME/bin/ycm_global_extra_conf.py')
-  let g:ycm_autoclose_preview_window_after_insertion = 1
-  set cscopetag
-endif
+  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+endfunction
+let &statusline = s:statusline_expr()
