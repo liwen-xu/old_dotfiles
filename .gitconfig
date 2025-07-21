@@ -3,7 +3,7 @@
   pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
 [user]
   name = Oliver Xu
-  email = olxu@hotmail.com
+  email = liwenxu86@gmail.com
 [core]
   excludesfile = ~/.gitignore
 [http]
@@ -11,4 +11,3 @@
   sslVerify = false
 [credential]
   helper = osxkeychain
-

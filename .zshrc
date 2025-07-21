@@ -177,16 +177,23 @@ export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
-export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
 export PATH="$HOME/bin:/usr/local/Cellar/tmux/3.3a_1/bin:$PATH"
+
 # openssl
 export PATH="/usr/local/opt/openssl@1.1/bin/:$PATH"
 export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+
 # llvm
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/bin/c++:/usr/bin/make
+
+# nvm
+export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #zprof

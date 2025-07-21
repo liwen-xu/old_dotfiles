@@ -17,6 +17,12 @@ if [ ! -e ~/.git-prompt.sh ]; then
   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
 fi
 
+# scripts
+mkdir -p ~/bin
+for bin in $BASE/bin/*; do
+  ln -svf "$bin" ~/bin
+done
+
 if [ ! -e ~/.zsh/_git ]; then
   curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
 fi
@@ -45,3 +51,9 @@ fi
 
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source-file ~/.tmux.conf
+
+mkdir -p ~/.config/nvim
+touch ~/.config/nvim/init.vim
+ln -sf $BASE/init.vim ~/.config/nvim/init.vim
+vim -es -u ~/.vimrc +PlugInstall +qa
+nvim -es -u ~/.config/nvim/init.vim +PlugInstall +qa
